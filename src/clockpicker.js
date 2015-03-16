@@ -302,6 +302,9 @@
 
 	function raiseCallback(callbackFunction, args, ctx) {
 		if (callbackFunction && typeof callbackFunction === "function") {
+			if(args && !Array.isArray(args))
+				args = [args];
+
 			callbackFunction.apply(ctx, args);
 		}
 	}
@@ -372,6 +375,8 @@
 		if (raiseAfterHourSelect) {
 			raiseCallback(this.options.afterHourSelect);
 		}
+
+		raiseCallback(this.options.afterViewToggle, view);
 	};
 
 	// Reset clock hand
