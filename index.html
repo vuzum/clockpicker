@@ -397,10 +397,18 @@ $('#check-minutes').click(function(e){
 
 <script type="text/javascript" src="assets/js/jquery.min.js"></script>
 <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="dist/bootstrap-clockpicker.min.js"></script>
+<script type="text/javascript" src="src/clockpicker.js"></script>
+<!-- <script type="text/javascript" src="dist/jquery-clockpicker.js"></script> -->
 <script type="text/javascript">
-$('.clockpicker').clockpicker()
-	.find('input').change(function(){
+$('.clockpicker').clockpicker({
+		clockUpdate: (function(){
+			var time = {hours: '00', minutes: '00'}
+			return function(prop, val){
+				time[prop] = val;
+				console.log(time);
+			}
+		})()
+	}).find('input').change(function(){
 		console.log(this.value);
 	});
 var input = $('#single-input').clockpicker({
