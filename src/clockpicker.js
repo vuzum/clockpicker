@@ -323,7 +323,7 @@
 		this.element.after(this.wrapper);
 
 		// Get the time
-		var value = ((this.options['default'] || '') + '').split(':');
+		var value = ((this.input.prop('value') || this.options['default'] || '') + '').split(':');
 		if (value[0] === 'now') {
 			var now = new Date(+ new Date() + this.options.fromnow);
 			value = [
@@ -520,6 +520,20 @@
 		raiseCallback(this.options.afterDone);
 	};
 
+	ClockPicker.prototype.refresh = function() {
+		// Get the time
+		var value = ((this.input.prop('value') || this.options['default'] || '') + '').split(':');
+		if (value[0] === 'now') {
+			var now = new Date(+ new Date() + this.options.fromnow);
+			value = [
+				now.getHours(),
+				now.getMinutes()
+			];
+		}
+		this.hours = + value[0] || 0;
+		this.minutes = + value[1] || 0;
+	};
+
 	// Remove clockpicker from input
 	ClockPicker.prototype.remove = function() {
 		this.element.removeData('clockpicker');
@@ -532,10 +546,11 @@
 		return this.each(function(){
 			var $this = $(this),
 				data = $this.data('clockpicker');
-			if (! data) {
+			if (!data) {
 				var options = $.extend({}, ClockPicker.DEFAULTS, $this.data(), typeof option == 'object' && option);
 				$this.data('clockpicker', new ClockPicker($this, options));
 			} else {
+				data.refresh();
 				// Manual operatsions. show, hide, remove, e.g.
 				if (typeof data[option] === 'function') {
 					data[option].apply(data, args);
